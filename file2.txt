@@ -1,1 +1,2 @@
 Add a line from local in feature branch
+Adding another line from local in the feature branch
