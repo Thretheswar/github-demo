@@ -1,1 +1,2 @@
 Testing PR and branch branch protection rules
+Add one more line to satisfy the requirements
