@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-slim
     steps:
       - name: Print the name of the job
-        run: echo "Hello from first job"
+        run: echo "Hello from the first job"
   
   second-job:
     runs-on: ubuntu-slim
