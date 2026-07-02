@@ -4,24 +4,32 @@ on:
   push:
     branches:
       - 'main'
+      - 'feat/**'
 
 jobs:
-  list-files:
+  first-job:
     runs-on: ubuntu-slim
     steps:
-      - name: Download the Repository code from Github
-        uses: actions/checkout@v4
-      
-      - name: List all the files in the Repository
-        run: |
-          echo "Listing all the files in the Repository"
-          ls -aR
-
       - name: Print the name of the job
-        run: echo "Hello from list-files job"
+        run: echo "Hello from first job"
   
   second-job:
     runs-on: ubuntu-slim
+    needs: first-job
     steps:
       - name: Print the name of the job
         run: echo "Hello from the second job"
+
+  third-job:
+    runs-on: ubuntu-slim
+    needs: second-job
+    steps:
+      - name: Print the name of the job
+        run: echo "Hello from the third job"
+
+  fourth-job:
+    runs-on: ubuntu-slim
+    needs: second-job
+    steps:
+      - name: Print the name of the job
+        run: echo "Hello from the fourth job"
