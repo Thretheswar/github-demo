@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 'main'
+      - 'feat/**'
 
 jobs:
   list-files:
@@ -15,4 +16,7 @@ jobs:
       - name: List all the files in the Repository
         run: |
           echo "Listing all the files in the Repository"
-          ls -R
+          ls -aR
+
+      - name: Print the name of the job
+        run: echo "Hello from list-files job"
