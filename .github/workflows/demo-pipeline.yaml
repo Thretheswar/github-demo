@@ -1,6 +1,6 @@
 name: Demo Pipeline
 
-run-name: "Demo Pipeline Run {{ github.run_number}} by {{ github.actor }}"
+run-name: "Demo Pipeline Run ${{ github.run_number}} by ${{ github.actor }}"
 
 on:
   push:
