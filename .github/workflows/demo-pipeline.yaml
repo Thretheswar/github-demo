@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 'main'
-      - 'feat/**'
 
 jobs:
   list-files:
@@ -20,3 +19,9 @@ jobs:
 
       - name: Print the name of the job
         run: echo "Hello from list-files job"
+  
+  second-job:
+    runs-on: ubuntu-slim
+    steps:
+      - name: Print the name of the job
+        run: echo "Hello from the second job"
