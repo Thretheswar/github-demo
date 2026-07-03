@@ -1,41 +1,39 @@
-name: Demo Pipeline
+name: Pipeline to Deploy Docker Image
 
-run-name: "Demo Pipeline Run ${{ github.run_number}} by ${{ github.actor }}"
+run-name: "Pipeline Run ${{ github.run_number}} initiated by ${{ github.actor }}"
 
 on:
   push:
     branches:
       - 'main'
-      - 'feat/**'
-      - 'develop'
-      - 'release/**'
+
 
 jobs:
-  first-job:
-    runs-on: ubuntu-slim
-    steps:
-      - name: Print the name of the job
-        run: echo "Hello from the first job"
-  
-  second-job:
-    runs-on: ubuntu-slim
-    needs: first-job
-    steps:
-      - name: Print the name of the job
-        run: echo "Hello from the second job"
+  build-test-deploy:
+    runs-on: ubuntu-latest
 
-  third-job:
-    runs-on: ubuntu-slim
-    needs: first-job
     steps:
-      - name: Print the name of the job
-        run: echo "Hello from the third job"
+      - name: Download the code from Repository
+        uses: actions/checkout@main
 
-  fourth-job:
-    runs-on: ubuntu-slim
-    needs: 
-      - second-job
-      - third-job
-    steps:
-      - name: Print the name of the job
-        run: echo "Hello from the fourth job"
+      - name: Build the Docker Image
+        run: |
+          echo "Building Docker Image"
+          docker build -t my-app-cicd:latest .
+
+      - name: Run Dummy Tests
+        run: |
+          echo "Running Some Dummy Tests"
+
+      - name: Login into Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+
+      - name: Tag and Push the Image
+        run: |
+          echo "Taging and Pushing the Image"
+          docker tag my-app-cicd:latest threthadevops2026/my-app-cicd:latest
+          docker push threthadevops2026/my-app-cicd:latest
