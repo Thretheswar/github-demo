@@ -1,27 +1,39 @@
-name: Demo Pipeline
+name: Pipeline to Deploy Docker Image
+
+run-name: "Pipeline Run ${{ github.run_number}} initiated by ${{ github.actor }}"
 
 on:
   push:
     branches:
       - 'main'
 
-jobs:
-  list-files:
-    runs-on: ubuntu-slim
-    steps:
-      - name: Download the Repository code from Github
-        uses: actions/checkout@v4
-      
-      - name: List all the files in the Repository
-        run: |
-          echo "Listing all the files in the Repository"
-          ls -aR
 
-      - name: Print the name of the job
-        run: echo "Hello from list-files job"
-  
-  second-job:
-    runs-on: ubuntu-slim
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+
     steps:
-      - name: Print the name of the job
-        run: echo "Hello from the second job"
+      - name: Download the code from Repository
+        uses: actions/checkout@main
+
+      - name: Build the Docker Image
+        run: |
+          echo "Building Docker Image"
+          docker build -t my-app-cicd:latest .
+
+      - name: Run Dummy Tests
+        run: |
+          echo "Running Some Dummy Tests"
+
+      - name: Login into Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+
+      - name: Tag and Push the Image
+        run: |
+          echo "Taging and Pushing the Image"
+          docker tag my-app-cicd:latest threthadevops2026/my-app-cicd:latest
+          docker push threthadevops2026/my-app-cicd:latest
